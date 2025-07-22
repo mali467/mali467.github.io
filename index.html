@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Konuşogle</title>
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: black; /* Tüm yazılar siyah */
+    }
+
+    .logo {
+      text-align: center;
+      margin-top: 100px;
+      font-size: 64px;
+      font-weight: bold;
+    }
+
+    .logo span:nth-child(1) { color: #4285F4; }
+    .logo span:nth-child(2) { color: #EA4335; }
+    .logo span:nth-child(3) { color: #FBBC05; }
+    .logo span:nth-child(4) { color: #4285F4; }
+    .logo span:nth-child(5) { color: #34A853; }
+    .logo span:nth-child(6) { color: #EA4335; }
+    .logo span:nth-child(7) { color: #FBBC05; }
+    .logo span:nth-child(8) { color: #4285F4; }
+    .logo span:nth-child(9) { color: #34A853; }
+
+    .search-box {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .search-box input[type="text"] {
+      width: 300px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      color: black;
+    }
+
+    .search-box button {
+      padding: 10px 16px;
+      margin-left: 8px;
+      border: none;
+      border-radius: 8px;
+      background-color: #526F35;
+      color: #ffffff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .search-box button:last-child {
+      background-color: #000000;
+      margin-left: 4px;
+    }
+
+    .response {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 20px;
+      color: black;
+    }
+
+    .footer {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      color: #000000;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="logo">
+    <span>K</span><span>o</span><span>n</span><span>u</span><span>ş</span><span>o</span><span>g</span><span>l</span><span>e</span>
+  </div>
+
+  <!-- Arama Kutusu -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Bir şeyler ara...">
+    <button onclick="cevapVer()">Ara</button>
+    <button onclick="temizle()">Temizle</button>
+  </div>
+
+  <!-- Cevap Alanı -->
+  <div class="response" id="responseArea"></div>
+
+  <!-- Alt Yazı -->
+  <div class="footer">Designed by Mali ⚡</div>
+
+  <!-- JavaScript -->
+  <script>
+    function cevapVer() {
+      const input = document.getElementById("searchInput").value.toLowerCase().trim();
+      const responseArea = document.getElementById("responseArea");
+
+      if (input === "türkiye") {
+        responseArea.textContent = "En kral ülke Türkiye 🇹🇷";
+      } else if (input === "hava durumu") {
+        responseArea.textContent = "Bugün hava konuşogle'de hep güzel! ☀️";
+      } else if (input === "") {
+        responseArea.textContent = "Lütfen bir şey yaz!";
+      } else if (input === "ben kimim") {
+        responseArea.textContent = "Allah'ın bir kulu";
+      } else if (input === "nasılsın") {
+        responseArea.textContent = "iyi sen";
+      } else if (input === "iyi") {
+        responseArea.textContent = "Buna sevindim";
+      } else {
+        const cevaplar = [
+          `"${input}" Boşverrr, takma kafana 😊`,
+          `"${input}" mi? Sanane ki 😎`,
+          `"${input}" diyorsun da... Banane 🤨`
+        ];
+        const rastgeleIndex = Math.floor(Math.random() * cevaplar.length);
+        responseArea.textContent = cevaplar[rastgeleIndex];
+      }
+    }
+
+    function temizle() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("responseArea").textContent = "";
+      document.getElementById("searchInput").focus();
+    }
+
+    // Enter tuşuna basınca da arama yap
+    document.getElementById("searchInput").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        cevapVer();
+      }
+    });
+  </script>
+
+</body>
+</html>
