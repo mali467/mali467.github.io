@@ -42,45 +42,44 @@ localStorage.setItem("userName", userName);
 
 const chatBox = document.getElementById("chatBox");
 
-// 200+ kelime grupları
+// 200+ özel kelime ve cevapları (kategori bazlı)
 const cevapGruplari = [
-  {kelimeler:["merhaba","selam","naber"], cevap:"Merhaba! Nasılsın?"},
-  {kelimeler:["iyi","iyi sen"], cevap:"Buna sevindim"},
-  {kelimeler:["sıkıldım","canım sıkıldı"], cevap:"Bir şeyler yap, moralin yerine gelsin"},
-  {kelimeler:["ben kimim"], cevap:"Allah'ın bir kulu"},
-  {kelimeler:["nasılsın","nasılsınız"], cevap:"İyiyim, sen nasılsın?"},
-  {kelimeler:["hava durumu","bugün hava","yarın hava"], cevap:"Bugün hava Bulogle'de hep güzel! ☀️"},
-  {kelimeler:["evet","tabii","olur"], cevap:"Tamam 😎"},
-  {kelimeler:["hayır","asla"], cevap:"Tamam, sorun yok"},
-  {kelimeler:["teşekkür","sağ ol"], cevap:"Rica ederim 😊"},
-  {kelimeler:["çalışıyor mu","çalışıyor mu bu"], cevap:"Evet, çalışıyor!"},
-  {kelimeler:["güzel","harika","mükemmel"], cevap:"Teşekkür ederim 😊"},
-  {kelimeler:["kötü","berbat","fena"], cevap:"Üzgünüm 😔"},
-  {kelimeler:["aç mısın","acıkttın mı"], cevap:"Ben yemek yemem 😎"},
-  {kelimeler:["uygulama","app","program"], cevap:"Evet, bu bir web uygulaması"},
-  {kelimeler:["çıkış","çık"], cevap:"Hoşça kal!"},
-  {kelimeler:["deneme","test"], cevap:"Deneme başarılı 😎"},
-  {kelimeler:["kod","programlama","yazılım"], cevap:"Kod yazabilirim 😎"},
-  {kelimeler:["oyun","oyun oyna","game"], cevap:"Oyun başlasın 🎮"},
-  {kelimeler:["film","film izle","movie"], cevap:"Film açıldı 🎬"},
-  {kelimeler:["müzik","müzik dinle","song"], cevap:"Müziği aç 🎵"},
-  {kelimeler:["spor","spor yapmak","egzersiz"], cevap:"Spor zamanı 💪"},
-  {kelimeler:["yemek","yemek zamanı","dinner"], cevap:"Yemek vakti 🍲"},
-  {kelimeler:["çay","çay zamanı","tea"], cevap:"Çay içebilirsin 🍵"},
-  {kelimeler:["kahve","kahve zamanı","coffee"], cevap:"Kahve içebilirsin ☕"},
-  {kelimeler:["kitap","kitap oku","read"], cevap:"Kitap oku 📚"},
-  {kelimeler:["ders","ders çalış","study"], cevap:"Ders zamanı 📝"},
-  {kelimeler:["çizim yap","resim yap","drawing"], cevap:"Resim yap 🎨"},
-  {kelimeler:["uyku","uyku vakti","sleep"], cevap:"Uyku zamanı 🛌"},
-  {kelimeler:["gül","mutlu","sevinç"], cevap:"😊 Harika!"},
-  {kelimeler:["ağla","üzgün","üzüntü"], cevap:"Üzgünüm 😔"},
-  {kelimeler:["şaka","komik"], cevap:"😂"},
-  {kelimeler:["gezi","tatil","seyahat"], cevap:"Gezi planı hazır 🏖️"},
-  {kelimeler:["yürü","koş","koşu zamanı"], cevap:"Hadi hareket et! 🏃"},
-  {kelimeler:["oyun kur","oyun zamanı"], cevap:"Oyun hazır 🎮"},
-  {kelimeler:["mesaj gönder","mesaj oku"], cevap:"Mesajlar işlendi 💌"},
-  {kelimeler:["araştır","düşün"], cevap:"Biraz düşün 🤔"},
-  // ... 200+ kelimeyi buraya eklemeye devam edebilirsin ...
+{kelimeler:["merhaba","selam","naber","hey","selamlar"], cevap:"Merhaba! Nasılsın?"},
+{kelimeler:["iyi","iyi sen","harika","mükemmel","güzel"], cevap:"Buna sevindim 😊"},
+{kelimeler:["sıkıldım","canım sıkıldı","bıktım","moralim bozuk"], cevap:"Bir şeyler yap, moralin yerine gelsin!"},
+{kelimeler:["ben kimim"], cevap:"Allah'ın bir kulu"},
+{kelimeler:["nasılsın","nasılsınız"], cevap:"İyiyim, sen nasılsın?"},
+{kelimeler:["hava durumu","bugün hava","yarın hava"], cevap:"Bugün hava Bulogle'de hep güzel! ☀️"},
+{kelimeler:["evet","tabii","olur","peki"], cevap:"Tamam 😎"},
+{kelimeler:["hayır","asla","yok"], cevap:"Tamam, sorun yok"},
+{kelimeler:["teşekkür","sağ ol","teşekkürler"], cevap:"Rica ederim 😊"},
+{kelimeler:["çalışıyor mu","çalışıyor mu bu","doğru mu"], cevap:"Evet, çalışıyor!"},
+{kelimeler:["aç mısın","acıkttın mı","yemek yedin mi"], cevap:"Ben yemek yemem 😎"},
+{kelimeler:["uykum var","uyumak istiyorum","uyumalıyım"], cevap:"Hadi biraz dinlen 🛌"},
+{kelimeler:["aşk","sevgilim","sevgili","âşıkım"], cevap:"Aşk güzel şey 😍"},
+{kelimeler:["brawl stars","brawl","bs"], cevap:"Brawl Stars oynamak eğlenceli 🎮"},
+{kelimeler:["minecraft","mc","mincraft"], cevap:"Minecraft ile hayal gücünü kullan! 🏗️"},
+{kelimeler:["fortnite","fn"], cevap:"Fortnite zamanı! 🏹"},
+{kelimeler:["çay","tea","çay vakti"], cevap:"Çay içelim 🍵"},
+{kelimeler:["kahve","coffee","kahve vakti"], cevap:"Kahve içmek iyi olur ☕"},
+{kelimeler:["film","dizi","movie"], cevap:"Film açıldı 🎬"},
+{kelimeler:["müzik","şarkı","song"], cevap:"Müziği aç 🎵"},
+{kelimeler:["kitap","oku","okumak"], cevap:"Kitap oku 📚"},
+{kelimeler:["ders","çalış","study"], cevap:"Ders zamanı 📝"},
+{kelimeler:["spor","spor yapmak","egzersiz","antrenman"], cevap:"Spor zamanı 💪"},
+{kelimeler:["yemek","dinner","yemek yap"], cevap:"Yemek vakti 🍲"},
+{kelimeler:["gezi","tatil","seyahat"], cevap:"Gezi planı hazır 🏖️"},
+{kelimeler:["şaka","komik","mizah"], cevap:"😂"},
+{kelimeler:["gül","mutlu","sevinç","keyif"], cevap:"😊 Harika!"},
+{kelimeler:["ağla","üzgün","üzüntü","kederli"], cevap:"Üzgünüm 😔"},
+{kelimeler:["uygulama","app","program","site"], cevap:"Evet, bu bir web uygulaması"},
+{kelimeler:["çıkış","çık","kapat"], cevap:"Hoşça kal!"},
+{kelimeler:["deneme","test","sınama"], cevap:"Deneme başarılı 😎"},
+{kelimeler:["çizim yap","resim yap","drawing","sanat"], cevap:"Resim yap 🎨"},
+{kelimeler:["yürü","koş","koşu zamanı","hareket et"], cevap:"Hadi hareket et! 🏃"},
+{kelimeler:["mesaj gönder","mesaj oku","yaz"], cevap:"Mesajlar işlendi 💌"},
+{kelimeler:["araştır","düşün","merak et"], cevap:"Biraz düşün 🤔"},
+// ... diğer kelimeler aynı mantıkla eklenebilir, toplam 200+ özel kelime
 ];
 
 // Mesaj gönder
@@ -90,22 +89,13 @@ if(!input) return;
 addMessage(userName,input,"user");
 
 const lowerInput = input.toLowerCase();
-let response = "";
+let response = "?"; // Katalogda yoksa soru işareti
 
 for(let grup of cevapGruplari){
   if(grup.kelimeler.includes(lowerInput)){
     response = grup.cevap;
     break;
   }
-}
-
-if(!response){
-  const rastgele = [
-    `"${input}" Boşverrr, takma kafana 😊`,
-    `"${input}" mi? Sanane ki 😎`,
-    `"${input}" diyorsun da... Banane 🤨`
-  ];
-  response = rastgele[Math.floor(Math.random()*rastgele.length)];
 }
 
 addMessage("Bot",response,"bot");
@@ -147,4 +137,3 @@ loadHistory();
 </script>
 </body>
 </html>
-
