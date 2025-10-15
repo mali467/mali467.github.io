@@ -1,132 +1,164 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<title>Konuşogle AI 500+</title>
-<style>
-body {background-color:#fff;font-family:Arial,sans-serif;margin:0;padding:0;color:black;transition:background-color 0.3s,color 0.3s;}
-.dark-mode{background-color:#121212;color:#e0e0e0;}
-.logo{text-align:center;margin-top:30px;font-size:50px;font-weight:bold;}
-.container{text-align:center;margin-top:20px;}
-.search-box input[type="text"]{width:300px;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:16px;color:inherit;background-color:inherit;}
-.search-box button,.search-box select{padding:10px 16px;margin-left:8px;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
-.chat-box{width:80%;max-width:600px;margin:30px auto;border:1px solid #ccc;border-radius:10px;padding:15px;text-align:left;height:400px;overflow-y:auto;background-color:rgba(240,240,240,0.5);}
-body.dark-mode .chat-box{background-color:rgba(30,30,30,0.7);border-color:#333;}
-.message{margin:8px 0;padding:8px;border-radius:8px;max-width:80%;}
-.user{background-color:#d1e7dd;align-self:flex-end;}
-.bot{background-color:#f8d7da;}
-body.dark-mode .user{background-color:#2e7d32;color:#fff;}
-body.dark-mode .bot{background-color:#8e24aa;color:#fff;}
-.footer{position:fixed;right:20px;bottom:20px;font-size:14px;}
-.toggle-mode{position:fixed;left:20px;bottom:20px;background-color:#444;color:#fff;border:none;border-radius:8px;padding:8px 12px;cursor:pointer;}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konuşogle 500+</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; color: #333; }
+    .chat-container { width: 100%; max-width: 600px; margin: 20px auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+    .chat-header { background: #4CAF50; color: white; padding: 10px; text-align: center; border-radius: 10px 10px 0 0; }
+    .chat-box { flex: 1; height: 400px; overflow-y: auto; padding: 10px; border-bottom: 1px solid #ddd; display: flex; flex-direction: column; }
+    .chat-box .message { margin: 10px 0; padding: 10px; border-radius: 10px; max-width: 80%; }
+    .chat-box .user { background: #e1f5e1; align-self: flex-end; }
+    .chat-box .bot { background: #f1f1f1; align-self: flex-start; }
+    .chat-footer { display: flex; padding: 10px; border-radius: 0 0 10px 10px; gap: 5px; }
+    .chat-footer input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 10px; }
+    .chat-footer button { padding: 10px 15px; background: #4CAF50; color: white; border: none; border-radius: 10px; cursor: pointer; }
+    .chat-footer button:hover { background: #45a049; }
+    .dark-mode { background-color: #121212; color: white; }
+    .dark-mode .chat-header { background-color: #333; }
+    .dark-mode .chat-box { background-color: #1e1e1e; }
+    .dark-mode .chat-box .message { background-color: #333; color: white; }
+    .dark-mode .chat-footer input, .dark-mode .chat-footer button { background-color: #333; color: white; border: 1px solid #444; }
+  </style>
 </head>
 <body>
-
-<div class="logo">Konuşogle</div>
-
-<div class="container">
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Bir şey yaz...">
-    <button onclick="cevapVer()">Gönder</button>
-    <button onclick="temizle()">Temizle</button>
-    <select id="tarzSec" onchange="tarzDegistir()">
-      <option value="normal">Normal</option>
-      <option value="komik">Komik</option>
-      <option value="ciddi">Ciddi</option>
-      <option value="samimi">Samimi</option>
-    </select>
+  <div class="chat-container">
+    <div class="chat-header">Konuşogle 500+</div>
+    <div class="chat-box" id="chatBox"></div>
+    <div class="chat-footer">
+      <input type="text" id="userInput" placeholder="Bir şey yaz..." onkeydown="if(event.key==='Enter') sendMessage()">
+      <button onclick="sendMessage()">Gönder</button>
+      <button onclick="clearChat()">Temizle</button>
+      <button onclick="toggleDarkMode()">🌙</button>
+    </div>
   </div>
-  <div class="chat-box" id="chatBox"></div>
-</div>
 
-<div class="footer">Designed by Mali ⚡</div>
-<button class="toggle-mode" onclick="geceModu()">🌙</button>
+  <script>
+    let userName = localStorage.getItem("userName") || prompt("Kullanıcı adınızı girin:") || "Sen";
+    localStorage.setItem("userName", userName);
 
-<script>
-let kullaniciAdi = localStorage.getItem("konusogleUser") || prompt("Kullanıcı adınız nedir?") || "Sen";
-localStorage.setItem("konusogleUser", kullaniciAdi);
-let tarz = localStorage.getItem("konusogleTarz") || "normal";
+    const chatBox = document.getElementById("chatBox");
 
-// 500+ özel kelime ve cevap örneği
-const cevaplar = {
-  "selam":"Selam! Nasılsın?",
-  "merhaba":"Merhaba! 😊",
-  "nasılsın":"İyiyim, sen nasılsın?",
-  "iyi":["Buna sevindim","Buna sevindim"],  // 'iyi' ve 'iyi sen' aynı cevap
-  "iyi sen":["Buna sevindim","Buna sevindim"],
-  "sıkıldım":"Bir müzik aç istersen, moral olur 🎵",
-  "canım sıkıldı":"Biraz dışarı çıkmak iyi gelir 🌤️",
-  "yorgunum":"Bir kahve al, hemen toparlanırsın ☕",
-  "açım":"Dolaba bir bak 😋",
-  "üzgünüm":"Üzülme, her şey düzelir 🌈",
-  "mutluyum":"Ne güzel! Hep öyle kal 🎉",
-  "ben kimim":"Sen benim en iyi sohbet arkadaşımsın 💖",
-  "türkiye":"En güzel ülke 🇹🇷",
-  "tatil":"Tatil planlamak çok iyi gelir 🌴",
-  "oyun":"Hadi oyun oynayalım 🎮",
-  "film":"Bir film açıp izle 🎬",
-  "müzik":"Biraz müzik dinle 🎵",
-  "alışveriş":"Alışveriş listeni hazırla 🛒",
-  "spor":"Spor yapmak sağlıklıdır 🏋️",
-  "okumak":"Bir kitap aç ve oku 📖",
-  "kahve":"Kahve keyfi yap ☕",
-  "çay":"Çay molası iyi gelir 🍵",
-  "uyumak":"Hadi biraz uyu 😴",
-  "gezmek":"Dışarı çıkıp gezmek iyi olur 🚶",
-  "yemek":"Bir şeyler ye 🍲",
-  "ders":"Derse çalışmak lazım 📚",
-  "çalışmak":"Odaklan ve çalış 💪",
-  "oyuncak":"Oyun oyna veya eğlen 🎲",
-  "resim":"Resim yap 🎨",
-  "fotoğraf":"Fotoğraf çek 📷",
-  "video":"Video izle 🎥",
-  "hava durumu":"Bugün hava hep güzel! ☀️",
-  // Ek olarak 500+ özel kelimeyi burada "X1":"cevap1","X2":"cevap2",... şeklinde ekle
-};
+    // 500+ özel kelime ve cevapları (örnek: tüm varyasyonları ekleyebilirsin)
+    const cevaplar = {
+      "merhaba":"Merhaba! Nasılsın?",
+      "selam":"Selam! Nasılsın?",
+      "nasılsın":"İyiyim, sen nasılsın?",
+      "iyi":"Buna sevindim",
+      "iyi sen":"Buna sevindim",
+      "sıkıldım":"Biraz dışarı çıkmak iyi gelir",
+      "canım sıkıldı":"Bir şeyler yap, moralin yerine gelsin",
+      "ben kimim":"Allah'ın bir kulu",
+      "evet":"Tamam 😎",
+      "hayır":"Tamam, sorun yok",
+      "teşekkür":"Rica ederim 😊",
+      "sağ ol":"Ne demek 😎",
+      "çalışıyor mu":"Evet, çalışıyor!",
+      "güzel":"Teşekkür ederim 😊",
+      "kötü":"Üzgünüm 😔",
+      "aç mısın":"Ben yemek yemem 😎",
+      "uygulama":"Evet, bu bir web uygulaması",
+      "çıkış":"Hoşça kal!",
+      "deneme":"Deneme başarılı 😎",
+      "program":"Evet, programlama öğrenebilirsin",
+      "kod":"Kod yazabilirim 😎",
+      "oyun":"Oyun oynayabilirsin",
+      "film":"Film izleyebilirsin",
+      "müzik":"Müzik dinleyebilirsin",
+      "spor":"Spor yapmak sağlıklı",
+      "spor yapmak":"Spor yapmak sağlıklı",
+      "hava durumu":"Bugün hava Bulogle'de hep güzel! ☀️",
+      "bugün":"Bugün harika bir gün 😎",
+      "yarın":"Yarın da güzel olacak",
+      "gece":"İyi geceler 🌙",
+      "günaydın":"Günaydın! ☀️",
+      "iyi akşamlar":"İyi akşamlar 🌙",
+      "nasılsınız":"İyiyim, teşekkürler",
+      "her şey iyi":"Harika 😎",
+      "sorun":"Sorun nedir?",
+      "yardım":"Tabii, neye ihtiyacın var?",
+      "çalış":"Tamam, çalışıyorum 😎",
+      "bekle":"Bekliyorum...",
+      "dur":"Tamam durdum",
+      "başla":"Hadi başlayalım!",
+      "bitir":"Bitti 😎",
+      "devam":"Devam edelim!",
+      "gül":"😊",
+      "ağla":"😢",
+      "mutlu":"😊 Harika!",
+      "üzgün":"Üzgünüm 😔",
+      "şaka":"😂",
+      "komik":"😄",
+      "müzik aç":"Müzik açıldı 🎵",
+      "film aç":"Film açıldı 🎬",
+      "oyun aç":"Oyun başlatıldı 🎮",
+      "çık":"Hoşça kal!",
+      "gir":"Girdi",
+      "kaydet":"Kaydedildi!",
+      "sil":"Silindi!",
+      "güncelle":"Güncellendi!",
+      "arama":"Arama yapılıyor...",
+      "durdur":"Durdu",
+      "devam et":"Devam ediyor",
+      "yükle":"Yüklendi",
+      "indir":"İndirildi",
+      "paylaş":"Paylaşıldı"
+      // Devamını benzer şekilde 500+ kelimeyi ekleyebilirsin
+    };
 
-// Kullanıcı mesajını ekleyen fonksiyon
-function cevapVer(){
-  const input = document.getElementById("searchInput").value.toLowerCase().trim();
-  const chatBox = document.getElementById("chatBox");
-  if(!input) return;
+    function sendMessage() {
+      const input = document.getElementById("userInput").value.trim();
+      if (!input) return;
 
-  // Kullanıcı mesajını ekle
-  const userMsg = document.createElement("div");
-  userMsg.className = "message user";
-  userMsg.textContent = kullaniciAdi + ": " + input;
-  chatBox.appendChild(userMsg);
+      addMessage(userName, input, "user");
 
-  // Özel kelime varsa cevabı ekle
-  if(cevaplar[input]){
-    let cevap = Array.isArray(cevaplar[input]) ? cevaplar[input][0] : cevaplar[input];
-    const botMsg = document.createElement("div");
-    botMsg.className = "message bot";
-    botMsg.textContent = "Bot: " + cevap;
-    chatBox.appendChild(botMsg);
-  }
+      const lowerInput = input.toLowerCase();
+      let response = cevaplar[lowerInput];
 
-  chatBox.scrollTop = chatBox.scrollHeight;
-  document.getElementById("searchInput").value = "";
-}
+      if (!response) {
+        const rastgele = [
+          `"${input}" Boşverrr, takma kafana 😊`,
+          `"${input}" mi? Sanane ki 😎`,
+          `"${input}" diyorsun da... Banane 🤨`
+        ];
+        response = rastgele[Math.floor(Math.random() * rastgele.length)];
+      }
 
-// Temizle butonu
-function temizle(){document.getElementById("chatBox").innerHTML="";}
+      addMessage("Bot", response, "bot");
+      document.getElementById("userInput").value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
 
-// Gece modu
-function geceModu(){document.body.classList.toggle("dark-mode");}
+    function addMessage(sender, message, type) {
+      const msgDiv = document.createElement("div");
+      msgDiv.className = `message ${type}`;
+      msgDiv.textContent = `${sender}: ${message}`;
+      chatBox.appendChild(msgDiv);
 
-// Tema seçimi
-function tarzDegistir(){
-  tarz = document.getElementById("tarzSec").value;
-  localStorage.setItem("konusogleTarz",tarz);
-}
+      // Kaydet
+      let history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+      history.push({sender,message,type});
+      localStorage.setItem("chatHistory", JSON.stringify(history));
+    }
 
-// Enter tuşu
-document.getElementById("searchInput").addEventListener("keydown", function(event){
-  if(event.key==="Enter"){cevapVer();}
-});
-</script>
+    function loadHistory() {
+      let history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+      history.forEach(msg => addMessage(msg.sender,msg.message,msg.type));
+    }
 
+    function clearChat() {
+      localStorage.removeItem("chatHistory");
+      chatBox.innerHTML = "";
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    // Sayfa açıldığında geçmişi yükle
+    loadHistory();
+  </script>
 </body>
 </html>
