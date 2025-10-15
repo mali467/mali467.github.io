@@ -42,135 +42,46 @@ localStorage.setItem("userName", userName);
 
 const chatBox = document.getElementById("chatBox");
 
-// 200+ özel kelime ve cevapları
-const cevaplar = {
-"merhaba":"Merhaba! Nasılsın?",
-"selam":"Selam! Nasılsın?",
-"nasılsın":"İyiyim, sen nasılsın?",
-"iyi":"Buna sevindim",
-"iyi sen":"Buna sevindim",
-"sıkıldım":"Biraz dışarı çıkmak iyi gelir",
-"canım sıkıldı":"Bir şeyler yap, moralin yerine gelsin",
-"ben kimim":"Allah'ın bir kulu",
-"evet":"Tamam 😎",
-"hayır":"Tamam, sorun yok",
-"teşekkür":"Rica ederim 😊",
-"sağ ol":"Ne demek 😎",
-"çalışıyor mu":"Evet, çalışıyor!",
-"güzel":"Teşekkür ederim 😊",
-"kötü":"Üzgünüm 😔",
-"aç mısın":"Ben yemek yemem 😎",
-"uygulama":"Evet, bu bir web uygulaması",
-"çıkış":"Hoşça kal!",
-"deneme":"Deneme başarılı 😎",
-"program":"Evet, programlama öğrenebilirsin",
-"kod":"Kod yazabilirim 😎",
-"oyun":"Oyun oynayabilirsin",
-"oyun oyna":"Oyun başlasın 🎮",
-"film":"Film izleyebilirsin",
-"film izle":"Film izledin mi?",
-"müzik":"Müzik dinleyebilirsin",
-"müzik dinle":"Müziği aç",
-"spor":"Spor yapmak sağlıklı",
-"spor yapmak":"Spor zamanı 💪",
-"hava durumu":"Bugün hava Bulogle'de hep güzel! ☀️",
-"bugün":"Bugün harika bir gün 😎",
-"yarın":"Yarın da güzel olacak",
-"gece":"İyi geceler 🌙",
-"günaydın":"Günaydın! ☀️",
-"iyi akşamlar":"İyi akşamlar 🌙",
-"nasılsınız":"İyiyim, teşekkürler",
-"her şey iyi":"Harika 😎",
-"sorun":"Sorun nedir?",
-"yardım":"Tabii, neye ihtiyacın var?",
-"çalış":"Tamam, çalışıyorum 😎",
-"bekle":"Bekliyorum...",
-"dur":"Tamam durdum",
-"başla":"Hadi başlayalım!",
-"bitir":"Bitti 😎",
-"devam":"Devam edelim!",
-"gül":"😊",
-"ağla":"😢",
-"mutlu":"😊 Harika!",
-"üzgün":"Üzgünüm 😔",
-"şaka":"😂",
-"komik":"😄",
-"müzik aç":"Müzik açıldı 🎵",
-"film aç":"Film açıldı 🎬",
-"oyun aç":"Oyun başlatıldı 🎮",
-"çık":"Hoşça kal!",
-"gir":"Girdi",
-"kaydet":"Kaydedildi!",
-"sil":"Silindi!",
-"güncelle":"Güncellendi!",
-"arama":"Arama yapılıyor...",
-"durdur":"Durdu",
-"devam et":"Devam ediyor",
-"yükle":"Yüklendi",
-"indir":"İndirildi",
-"paylaş":"Paylaşıldı",
-"sor":"Ne soracaksın?",
-"ara":"Arama başlatıldı...",
-"oyuncak":"Oyun ve oyuncaklar hazır",
-"alışveriş":"Alışveriş zamanı 🛒",
-"okul":"Okula gidiyorsun",
-"çalışma":"Çalışma zamanı 📝",
-"ders":"Ders yap!",
-"tatil":"Tatil güzel olur 🏖️",
-"yemek":"Ne yemek istersin?",
-"su":"Su içmeyi unutma 💧",
-"kahve":"Kahve içebilirsin ☕",
-"çay":"Çay iyi gelir 🍵",
-"araba":"Arabayı sürmek eğlenceli 🚗",
-"telefon":"Telefonun çalışıyor mu?",
-"bilgisayar":"Bilgisayar açık mı?",
-"not":"Not aldın mı?",
-"film öneri":"Film öneriyorum 🎬",
-"müzik öneri":"Müzik açıldı 🎵",
-"oyun öneri":"Oyun başlatıldı 🎮",
-"alışveriş yap":"Alışverişe çıkabilirsin 🛍️",
-"tatil plan":"Tatil planı hazır",
-"spor yap":"Hadi spor zamanı 💪",
-"yürü":"Yürüyüş yap",
-"koş":"Koşmaya başla",
-"koşu":"Koşu zamanı 🏃",
-"yemek hazır":"Yemek hazır 🍲",
-"kitap":"Kitap oku 📚",
-"ders çalış":"Ders zamanı 📝",
-"çizim yap":"Çizim zamanı 🎨",
-"resim yap":"Resim yapabilirsin 🎨",
-"oyun kur":"Oyun kurabilirsin 🎮",
-"arkadaş":"Arkadaşlarınla görüş",
-"sevinç":"Seviniyorum 😊",
-"üzüntü":"Üzgünüm 😔",
-"müzik dinle":"Müzik açıldı 🎵",
-"film izle":"Film açıldı 🎬",
-"uyku":"Uyku zamanı 🛌",
-"gezi":"Gezi planı hazır",
-"tatil yap":"Tatil zamanı 🏖️",
-"alışveriş zamanı":"Alışveriş yapabilirsin 🛍️",
-"oyun zamanı":"Oyun zamanı 🎮",
-"spor zamanı":"Spor yap 💪",
-"yemek zamanı":"Yemek vakti 🍲",
-"çay zamanı":"Çay içebilirsin 🍵",
-"kahve zamanı":"Kahve içebilirsin ☕",
-"kitap zamanı":"Kitap oku 📚",
-"ders zamanı":"Ders çalış 📝",
-"çizim zamanı":"Çizim yap 🎨",
-"resim zamanı":"Resim yap 🎨",
-"koş zamanı":"Koşu başla 🏃",
-"yürü zamanı":"Yürüyüş yap 🚶",
-"film vakti":"Film izle 🎬",
-"müzik vakti":"Müziği aç 🎵",
-"uyku vakti":"Uyku zamanı 🛌",
-"dinlen":"Dinlenmeye zaman ayır",
-"düşün":"Biraz düşün 🤔",
-"araştır":"Araştırmaya başla 🔍",
-"oyun kur":"Oyun hazır 🎮",
-"arkadaş bul":"Arkadaş bulmaya çalış",
-"mesaj gönder":"Mesaj gönderildi",
-"mesaj oku":"Mesajlar okundu"
-};
+// 200+ kelime grupları
+const cevapGruplari = [
+  {kelimeler:["merhaba","selam","naber"], cevap:"Merhaba! Nasılsın?"},
+  {kelimeler:["iyi","iyi sen"], cevap:"Buna sevindim"},
+  {kelimeler:["sıkıldım","canım sıkıldı"], cevap:"Bir şeyler yap, moralin yerine gelsin"},
+  {kelimeler:["ben kimim"], cevap:"Allah'ın bir kulu"},
+  {kelimeler:["nasılsın","nasılsınız"], cevap:"İyiyim, sen nasılsın?"},
+  {kelimeler:["hava durumu","bugün hava","yarın hava"], cevap:"Bugün hava Bulogle'de hep güzel! ☀️"},
+  {kelimeler:["evet","tabii","olur"], cevap:"Tamam 😎"},
+  {kelimeler:["hayır","asla"], cevap:"Tamam, sorun yok"},
+  {kelimeler:["teşekkür","sağ ol"], cevap:"Rica ederim 😊"},
+  {kelimeler:["çalışıyor mu","çalışıyor mu bu"], cevap:"Evet, çalışıyor!"},
+  {kelimeler:["güzel","harika","mükemmel"], cevap:"Teşekkür ederim 😊"},
+  {kelimeler:["kötü","berbat","fena"], cevap:"Üzgünüm 😔"},
+  {kelimeler:["aç mısın","acıkttın mı"], cevap:"Ben yemek yemem 😎"},
+  {kelimeler:["uygulama","app","program"], cevap:"Evet, bu bir web uygulaması"},
+  {kelimeler:["çıkış","çık"], cevap:"Hoşça kal!"},
+  {kelimeler:["deneme","test"], cevap:"Deneme başarılı 😎"},
+  {kelimeler:["kod","programlama","yazılım"], cevap:"Kod yazabilirim 😎"},
+  {kelimeler:["oyun","oyun oyna","game"], cevap:"Oyun başlasın 🎮"},
+  {kelimeler:["film","film izle","movie"], cevap:"Film açıldı 🎬"},
+  {kelimeler:["müzik","müzik dinle","song"], cevap:"Müziği aç 🎵"},
+  {kelimeler:["spor","spor yapmak","egzersiz"], cevap:"Spor zamanı 💪"},
+  {kelimeler:["yemek","yemek zamanı","dinner"], cevap:"Yemek vakti 🍲"},
+  {kelimeler:["çay","çay zamanı","tea"], cevap:"Çay içebilirsin 🍵"},
+  {kelimeler:["kahve","kahve zamanı","coffee"], cevap:"Kahve içebilirsin ☕"},
+  {kelimeler:["kitap","kitap oku","read"], cevap:"Kitap oku 📚"},
+  {kelimeler:["ders","ders çalış","study"], cevap:"Ders zamanı 📝"},
+  {kelimeler:["çizim yap","resim yap","drawing"], cevap:"Resim yap 🎨"},
+  {kelimeler:["uyku","uyku vakti","sleep"], cevap:"Uyku zamanı 🛌"},
+  {kelimeler:["gül","mutlu","sevinç"], cevap:"😊 Harika!"},
+  {kelimeler:["ağla","üzgün","üzüntü"], cevap:"Üzgünüm 😔"},
+  {kelimeler:["şaka","komik"], cevap:"😂"},
+  {kelimeler:["gezi","tatil","seyahat"], cevap:"Gezi planı hazır 🏖️"},
+  {kelimeler:["yürü","koş","koşu zamanı"], cevap:"Hadi hareket et! 🏃"},
+  {kelimeler:["oyun kur","oyun zamanı"], cevap:"Oyun hazır 🎮"},
+  {kelimeler:["mesaj gönder","mesaj oku"], cevap:"Mesajlar işlendi 💌"},
+  {kelimeler:["araştır","düşün"], cevap:"Biraz düşün 🤔"},
+  // ... 200+ kelimeyi buraya eklemeye devam edebilirsin ...
+];
 
 // Mesaj gönder
 function sendMessage(){
@@ -179,15 +90,22 @@ if(!input) return;
 addMessage(userName,input,"user");
 
 const lowerInput = input.toLowerCase();
-let response = cevaplar[lowerInput];
+let response = "";
+
+for(let grup of cevapGruplari){
+  if(grup.kelimeler.includes(lowerInput)){
+    response = grup.cevap;
+    break;
+  }
+}
 
 if(!response){
-const rastgele = [
-`"${input}" Boşverrr, takma kafana 😊`,
-`"${input}" mi? Sanane ki 😎`,
-`"${input}" diyorsun da... Banane 🤨`
-];
-response = rastgele[Math.floor(Math.random()*rastgele.length)];
+  const rastgele = [
+    `"${input}" Boşverrr, takma kafana 😊`,
+    `"${input}" mi? Sanane ki 😎`,
+    `"${input}" diyorsun da... Banane 🤨`
+  ];
+  response = rastgele[Math.floor(Math.random()*rastgele.length)];
 }
 
 addMessage("Bot",response,"bot");
@@ -202,7 +120,6 @@ msgDiv.className=`message ${type}`;
 msgDiv.textContent=`${sender}: ${message}`;
 chatBox.appendChild(msgDiv);
 
-// Kaydet
 let history = JSON.parse(localStorage.getItem("chatHistory")||"[]");
 history.push({sender,message,type});
 localStorage.setItem("chatHistory",JSON.stringify(history));
