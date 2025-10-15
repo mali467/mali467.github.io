@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Konuşogle</title>
   <style>
     body {
@@ -9,7 +9,7 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      color: black; /* Tüm yazılar siyah */
+      color: black;
     }
 
     .logo {
@@ -54,11 +54,6 @@
       cursor: pointer;
     }
 
-    .search-box button:last-child {
-      background-color: #000000;
-      margin-left: 4px;
-    }
-
     .response {
       text-align: center;
       margin-top: 30px;
@@ -77,64 +72,83 @@
 </head>
 <body>
 
-  <!-- Logo -->
   <div class="logo">
     <span>K</span><span>o</span><span>n</span><span>u</span><span>ş</span><span>o</span><span>g</span><span>l</span><span>e</span>
   </div>
 
-  <!-- Arama Kutusu -->
   <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Bir şeyler ara...">
-    <button onclick="cevapVer()">Ara</button>
+    <input type="text" id="searchInput" placeholder="Bir şeyler yaz...">
+    <button onclick="cevapVer()">Gönder</button>
     <button onclick="temizle()">Temizle</button>
   </div>
 
-  <!-- Cevap Alanı -->
   <div class="response" id="responseArea"></div>
 
-  <!-- Alt Yazı -->
   <div class="footer">Designed by Mali ⚡</div>
 
-  <!-- JavaScript -->
   <script>
     function cevapVer() {
       const input = document.getElementById("searchInput").value.toLowerCase().trim();
       const responseArea = document.getElementById("responseArea");
 
-      if (input === "türkiye") {
-        responseArea.textContent = "En kral ülke Türkiye 🇹🇷";
-      } else if (input === "hava durumu") {
-        responseArea.textContent = "Bugün hava konuşogle'de hep güzel! ☀️";
-      } else if (input === "") {
+      const cevaplar = {
+        "selam": "Selam! 👋 Hoş geldin!",
+        "merhaba": "Merhabalar 😄 Nasılsın bakalım?",
+        "naber": "İyiyim, sen nasılsın?",
+        "nasılsın": "İyi sayılırım, sen? 😊",
+        "iyi": "Süper! Böyle devam et 😎",
+        "kötü": "Üzülme, geçer bu günler 🌤️",
+        "hava nasıl": "Konuşogle havası hep güzel ☀️",
+        "saat kaç": "Saat bana göre hep eğlenme vakti 😜",
+        "ne yapıyorsun": "Sohbet etmeye hazırım ⚡️",
+        "sıkıldım": "O zaman biraz müzik aç ya da benimle konuş 😁",
+        "ne haber": "Senden haber bekliyorum işte 😉",
+        "seni kim yaptı": "Tabii ki Mali ⚡️",
+        "sen kimsin": "Ben Konuşogle! Sohbetlerin ustası 😎",
+        "ben kimim": "Allah’ın bir kulu 😌",
+        "seni seviyorum": "Ben de seni sevdim 😳💛",
+        "saçmalama": "O zaman biraz ciddi konuşalım 😅",
+        "mal": "Ayıp ama… 😢",
+        "aptal": "En azından yaratıcıyım 😏",
+        "uyuyorum": "Güzel rüyalar 🌙",
+        "uykum var": "Kahve iç o zaman ☕",
+        "banane": "Aynen ya, bana ne 😎",
+        "sus": "Peki sessizim… 🤐",
+        "türkiye": "En kral ülke Türkiye 🇹🇷",
+        "atatürk": "Mustafa Kemal Atatürk 🇹🇷, sonsuz saygıyla.",
+        "uzay": "Sonsuz ve gizemli 🌌",
+        "dünya": "Güzel ama biraz karışık 😅",
+        "okul": "Kimi sever, kimi kaçar 😅",
+        "sınav": "Aman ondan bahsetme 😩"
+      };
+
+      if (input === "") {
         responseArea.textContent = "Lütfen bir şey yaz!";
-      } else if (input === "ben kimim") {
-        responseArea.textContent = "Allah'ın bir kulu";
-      } else if (input === "nasılsın") {
-        responseArea.textContent = "iyi sen";
-      } else if (input === "iyi") {
-        responseArea.textContent = "Buna sevindim";
+        return;
+      }
+
+      if (cevaplar[input]) {
+        responseArea.textContent = cevaplar[input];
       } else {
-        const cevaplar = [
-          `"${input}" Boşverrr, takma kafana 😊`,
+        const rastgele = [
+          `"${input}" Boşver, takma kafana 😊`,
           `"${input}" mi? Sanane ki 😎`,
-          `"${input}" diyorsun da... Banane 🤨`
+          `"${input}" diyorsun da... Banane 🤨`,
+          `"${input}" haa... Hee tabii tabii 🙄`,
+          `"${input}" anlamadım ama ilginç 😂`
         ];
-        const rastgeleIndex = Math.floor(Math.random() * cevaplar.length);
-        responseArea.textContent = cevaplar[rastgeleIndex];
+        const index = Math.floor(Math.random() * rastgele.length);
+        responseArea.textContent = rastgele[index];
       }
     }
 
     function temizle() {
       document.getElementById("searchInput").value = "";
       document.getElementById("responseArea").textContent = "";
-      document.getElementById("searchInput").focus();
     }
 
-    // Enter tuşuna basınca da arama yap
     document.getElementById("searchInput").addEventListener("keydown", function(event) {
-      if (event.key === "Enter") {
-        cevapVer();
-      }
+      if (event.key === "Enter") cevapVer();
     });
   </script>
 
