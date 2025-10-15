@@ -2,32 +2,32 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>Konuşogle AI</title>
+<title>Konuşogle AI Tam Sürüm</title>
 <style>
-  body {background-color:#fff;font-family:Arial,sans-serif;margin:0;padding:0;color:black;transition:background-color 0.3s,color 0.3s;}
-  .dark-mode{background-color:#121212;color:#e0e0e0;}
-  .logo{text-align:center;margin-top:30px;font-size:50px;font-weight:bold;}
-  .logo span:nth-child(1){color:#4285F4;}
-  .logo span:nth-child(2){color:#EA4335;}
-  .logo span:nth-child(3){color:#FBBC05;}
-  .logo span:nth-child(4){color:#4285F4;}
-  .logo span:nth-child(5){color:#34A853;}
-  .logo span:nth-child(6){color:#EA4335;}
-  .logo span:nth-child(7){color:#FBBC05;}
-  .logo span:nth-child(8){color:#4285F4;}
-  .logo span:nth-child(9){color:#34A853;}
-  .container{text-align:center;margin-top:20px;}
-  .search-box input[type="text"]{width:300px;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:16px;color:inherit;background-color:inherit;}
-  .search-box button,.search-box select{padding:10px 16px;margin-left:8px;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
-  .chat-box{width:80%;max-width:600px;margin:30px auto;border:1px solid #ccc;border-radius:10px;padding:15px;text-align:left;height:300px;overflow-y:auto;background-color:rgba(240,240,240,0.5);}
-  body.dark-mode .chat-box{background-color:rgba(30,30,30,0.7);border-color:#333;}
-  .message{margin:8px 0;padding:8px;border-radius:8px;max-width:80%;}
-  .user{background-color:#d1e7dd;align-self:flex-end;}
-  .bot{background-color:#f8d7da;}
-  body.dark-mode .user{background-color:#2e7d32;color:#fff;}
-  body.dark-mode .bot{background-color:#8e24aa;color:#fff;}
-  .footer{position:fixed;right:20px;bottom:20px;font-size:14px;}
-  .toggle-mode{position:fixed;left:20px;bottom:20px;background-color:#444;color:#fff;border:none;border-radius:8px;padding:8px 12px;cursor:pointer;}
+body {background-color:#fff;font-family:Arial,sans-serif;margin:0;padding:0;color:black;transition:background-color 0.3s,color 0.3s;}
+.dark-mode{background-color:#121212;color:#e0e0e0;}
+.logo{text-align:center;margin-top:30px;font-size:50px;font-weight:bold;}
+.logo span:nth-child(1){color:#4285F4;}
+.logo span:nth-child(2){color:#EA4335;}
+.logo span:nth-child(3){color:#FBBC05;}
+.logo span:nth-child(4){color:#4285F4;}
+.logo span:nth-child(5){color:#34A853;}
+.logo span:nth-child(6){color:#EA4335;}
+.logo span:nth-child(7){color:#FBBC05;}
+.logo span:nth-child(8){color:#4285F4;}
+.logo span:nth-child(9){color:#34A853;}
+.container{text-align:center;margin-top:20px;}
+.search-box input[type="text"]{width:300px;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:16px;color:inherit;background-color:inherit;}
+.search-box button,.search-box select{padding:10px 16px;margin-left:8px;border:none;border-radius:8px;cursor:pointer;font-weight:bold;}
+.chat-box{width:80%;max-width:600px;margin:30px auto;border:1px solid #ccc;border-radius:10px;padding:15px;text-align:left;height:350px;overflow-y:auto;background-color:rgba(240,240,240,0.5);}
+body.dark-mode .chat-box{background-color:rgba(30,30,30,0.7);border-color:#333;}
+.message{margin:8px 0;padding:8px;border-radius:8px;max-width:80%;}
+.user{background-color:#d1e7dd;align-self:flex-end;}
+.bot{background-color:#f8d7da;}
+body.dark-mode .user{background-color:#2e7d32;color:#fff;}
+body.dark-mode .bot{background-color:#8e24aa;color:#fff;}
+.footer{position:fixed;right:20px;bottom:20px;font-size:14px;}
+.toggle-mode{position:fixed;left:20px;bottom:20px;background-color:#444;color:#fff;border:none;border-radius:8px;padding:8px 12px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -59,93 +59,196 @@ let kullaniciAdi = localStorage.getItem("konusogleUser") || prompt("Kullanıcı 
 localStorage.setItem("konusogleUser", kullaniciAdi);
 let tarz = localStorage.getItem("konusogleTarz") || "normal";
 
+// 100+ özel mesajlı veri tabanı
 const cevaplar = {
-  "selam":"Selam! Nasılsın?",
-  "merhaba":"Merhaba! 😊",
-  "nasılsın":"İyiyim, sen nasılsın?",
-  "sıkıldım":"Bir müzik aç istersen, moral olur 🎵",
-  "canım sıkıldı":"Biraz dışarı çıkmak iyi gelebilir 🌤️",
-  "yorgunum":"Bir kahve al, hemen toparlanırsın ☕",
-  "açım":"Dolaba bir bak 😋",
-  "üzgünüm":"Üzülme, her şey düzelir 🌈",
-  "mutluyum":"Ne güzel! Hep öyle kal 🎉",
-  "ben kimim":"Sen benim en iyi sohbet arkadaşımsın 💖",
-  "türkiye":"En güzel ülke 🇹🇷"
+"selam":"Selam! Nasılsın?",
+"merhaba":"Merhaba! 😊",
+"nasılsın":"İyiyim, sen nasılsın?",
+"sıkıldım":"Bir müzik aç istersen, moral olur 🎵",
+"canım sıkıldı":"Biraz dışarı çıkmak iyi gelebilir 🌤️",
+"yorgunum":"Bir kahve al, hemen toparlanırsın ☕",
+"açım":"Dolaba bir bak 😋",
+"üzgünüm":"Üzülme, her şey düzelir 🌈",
+"mutluyum":"Ne güzel! Hep öyle kal 🎉",
+"ben kimim":"Sen benim en iyi sohbet arkadaşımsın 💖",
+"türkiye":"En güzel ülke 🇹🇷",
+"iyi":"Buna sevindim 😄",
+"kötüyüm":"Umarım biraz daha iyi hissedersin 😌",
+"naber":"İyidir, ya sen? 😎",
+"hava durumu":"Bugün hava güzel, dışarı çıkmak iyi olur ☀️",
+"kitap":"Okumak bilgi kazandırır 📚",
+"oyun":"Hadi biraz oyun oynayalım 🎮",
+"müzik":"Müziği aç, ruhunu dinlendir 🎵",
+"film":"Film izlemek iyi gelir 🎬",
+"spor":"Biraz hareket etmek iyi olur 🏃‍♂️",
+"kahve":"Kahveni al, enerjin yerine gelir ☕",
+"çay":"Bir bardak çay iyi gider 🍵",
+"tatil":"Tatil planı yap, kafa dinle 🏖️",
+"alışveriş":"Biraz gezmek iyi gelir 🛍️",
+"arkadaş":"Arkadaşını ara, sohbet et 👥",
+"yemek":"Ne yemek istersin? 🍔",
+"sağlık":"Sağlığına dikkat et ❤️",
+"haber":"Güncel haberleri oku 📰",
+"doğa":"Dışarı çık ve doğayı keşfet 🌳",
+"teknoloji":"Yeni teknolojileri dene 💻",
+"bilim":"Bilim öğrenmek eğlencelidir 🔬",
+"resim":"Resim yapmak keyif verir 🎨",
+"yazılım":"Kod yazmak heyecanlıdır 💻",
+"programlama":"Programlama beceri kazandırır 👨‍💻",
+"tarih":"Tarihi araştırmak ilginçtir 🏛️",
+"gezi":"Yeni yerler keşfetmek güzel 🗺️",
+"araba":"Araba sürmek keyiflidir 🚗",
+"spor salonu":"Spor yapmak enerji verir 🏋️‍♂️",
+"oyuncak":"Oyun oynamak eğlencelidir 🧸",
+"hayvan":"Hayvanları sev, dost edin 🐶",
+"evcil hayvan":"Evcil hayvanınla ilgilen 🐱",
+"deniz":"Deniz kenarında rahatla 🌊",
+"dağ":"Dağ yürüyüşü yap ⛰️",
+"kahkaha":"Gülmek ruhu iyileştirir 😂",
+"mutluluk":"Mutluluk paylaştıkça artar 😊",
+"üzüntü":"Biraz müzik dinle, rahatla 🎶",
+"motivasyon":"Kendine güven 💪",
+"ders":"Ders çalış, bilgini artır 📘",
+"tatlı":"Tatlı yemek iyi gelir 🍰",
+"kahvaltı":"Güzel bir kahvaltı yap 🍳",
+"ödev":"Ödevini bitir, rahatla 📝",
+"film önerisi":"Bir film izle 🎬",
+"oyun önerisi":"Oyun dene 🎮",
+"hikaye":"Hikaye oku 📖",
+"şiir":"Şiir oku ✍️",
+"sanat":"Sanatla ilgilen 🎨",
+"televizyon":"Televizyon aç 🎥",
+"internet":"İnternette gez 🌐",
+"program":"Bugün plan yap 📅",
+"alışkanlık":"İyi alışkanlık edin 🏆",
+"yeni yıl":"Yeni yılı kutla 🎉",
+"doğum günü":"Mutlu yıllar 🎂",
+"mutlu gün":"Güzel bir gün geçir 🌞",
+"tatil planı":"Tatil planla 🏖️",
+"spor haber":"Spor haberlerini oku 🏅",
+"hava":"Hava durumunu kontrol et ☀️",
+"sağlıklı yaşam":"Sağlıklı yaşa 🍏",
+"motivasyon mesajı":"Kendine güven 💪",
+"kahkaha zamanı":"Gül biraz 😂",
+"yarış":"Yarışa katıl 🚴",
+"yemek tarifi":"Yeni tarif dene 🍲",
+"resim yap":"Resim yap 🎨",
+"fotoğraf":"Fotoğraf çek 📷",
+"şarkı":"Şarkı dinle 🎵",
+"dans":"Dans et 💃",
+"spor yap":"Hareket et 🏃",
+"yaz":"Yaz mevsimini sev ☀️",
+"kış":"Kışın keyfi farklı ❄️",
+"bahar":"Baharın tadını çıkar 🌸",
+"sonbahar":"Sonbaharın renkleri 🍂",
+"tatlı zaman":"Tatlı ye 🍰",
+"kahve molası":"Kahveni al ☕",
+"çay molası":"Çay iç 🍵",
+"film vakti":"Film izle 🎬",
+"oyun vakti":"Oyun oyna 🎮",
+"müzik dinle":"Müziği aç 🎶",
+"düşün":"Biraz düşün 🤔",
+"hayal":"Hayal kur 🌈",
+"rüya":"Rüya gör 😴",
+"başarı":"Başarıya odaklan 💪",
+"hedef":"Hedef belirle 🎯",
+"plan":"Plan yap 📋",
+"umut":"Umut hep vardır 🌟",
+"sevgi":"Sevgi paylaş 💖",
+"arkadaşlık":"Arkadaşlarına değer ver 🤝",
+"bilgi":"Yeni bilgi öğren 📚",
+"eğlence":"Biraz eğlen 🎉",
+"komik":"Komik bir şey söyle 😂",
+"ciddi":"Ciddi düşün 🤨",
+"samimi":"Samimi ol 💌",
+"merak":"Merak et, keşfet 🔍",
+"öğren":"Yeni bir şey öğren 📘",
+"deney":"Deney yap 🔬",
+"yaratıcı":"Yaratıcı ol 🎨",
+"spor yapalım":"Biraz spor yap 🏋️",
+"koş":"Koş, enerjini at 🏃",
+"yürüyüş":"Yürüyüş yap 🚶",
+"dans et":"Dans et 💃",
+"yemek yap":"Yemek hazırla 🍲",
+"temizlik":"Odayı temizle 🧹",
+"alışveriş yap":"Biraz alışveriş yap 🛍️",
+"dinlen":"Dinlen biraz 😌",
+"meditasyon":"Meditasyon yap 🧘",
+"müzik aç":"Müziği aç 🎵",
+"film aç":"Film izle 🎬",
+"oyun aç":"Oyun oyna 🎮",
+"gül":"Gül biraz 😂",
+"araştır":"Araştır bir konu 🔍",
+"okumak":"Kitap oku 📚",
+"yazmak":"Bir şeyler yaz ✍️",
+"çizim":"Çizim yap 🎨",
+"fotoğraf çek":"Fotoğraf çek 📷",
+"video izle":"Video izle 🎥",
+"uyumak":"Uyumaya git 😴",
+"hareket et":"Hareket et 🏃",
+"spora başla":"Spora başla 🏋️",
+"oyun oyna":"Oyun oyna 🎮",
+"kod yaz":"Kod yaz 💻",
+"projeni yap":"Projeni bitir 📝",
+"hayal et":"Hayal et 🌈"
 };
 
-function eslesmeBul(metin){
-  metin = metin.toLowerCase();
-  for(let anahtar in cevaplar){
-    if(metin.includes(anahtar)) return cevaplar[anahtar];
-  }
-  return null;
-}
-
-function yazmaEfekti(element,text,i=0){
-  if(i<text.length){
-    element.innerHTML += text.charAt(i);
-    setTimeout(()=>yazmaEfekti(element,text,i+1),30);
-  }
-}
-
 function cevapVer(){
-  const input=document.getElementById("searchInput").value.trim();
+  const input = document.getElementById("searchInput").value.toLowerCase().trim();
+  const chatBox = document.getElementById("chatBox");
   if(!input) return;
-  const chatBox=document.getElementById("chatBox");
-
-  chatBox.innerHTML+=`<div class="message user">${kullaniciAdi}: ${input}</div>`;
-
-  let cevap=eslesmeBul(input);
-  if(!cevap){
-    const rastgele=[
-      "Boşver, takma kafana 😌",
-      "Sanane 😏",
-      "Banane 😅",
-      "Hmm... ilginç dedin 🤔"
+  
+  // Kullanıcı mesajını ekle
+  const userMsg = document.createElement("div");
+  userMsg.className = "message user";
+  userMsg.textContent = kullaniciAdi + ": " + input;
+  chatBox.appendChild(userMsg);
+  
+  // Cevap üret
+  let botCevap;
+  if(cevaplar[input]){
+    botCevap = cevaplar[input];
+  } else {
+    const rastgele = [
+      `"${input}" Boşver, takma kafana 😊`,
+      `"${input}" mi? Sanane ki 😎`,
+      `"${input}" diyorsun da... Banane 🤨`
     ];
-    // Tarz seçimi
-    if(tarz==="komik") rastgele.push("Haha 😂 çok iyi!");
-    else if(tarz==="ciddi") rastgele.push("Bu konu ciddi. 🤨");
-    else if(tarz==="samimi") rastgele.push("Canım, anlıyorum 😊");
-    cevap=rastgele[Math.floor(Math.random()*rastgele.length)];
+    botCevap = rastgele[Math.floor(Math.random()*rastgele.length)];
   }
-
-  const botMsg=document.createElement("div");
-  botMsg.className="message bot";
+  
+  const botMsg = document.createElement("div");
+  botMsg.className = "message bot";
+  botMsg.textContent = "Bot: " + botCevap;
   chatBox.appendChild(botMsg);
-  yazmaEfekti(botMsg,cevap);
-
-  localStorage.setItem("konusogleChat",chatBox.innerHTML);
-  localStorage.setItem("konusogleTarz",tarz);
-  chatBox.scrollTop=chatBox.scrollHeight;
-  document.getElementById("searchInput").value="";
+  
+  chatBox.scrollTop = chatBox.scrollHeight;
+  document.getElementById("searchInput").value = "";
 }
 
 function temizle(){
   document.getElementById("chatBox").innerHTML="";
-  localStorage.removeItem("konusogleChat");
 }
 
 function geceModu(){
   document.body.classList.toggle("dark-mode");
-  localStorage.setItem("darkMode",document.body.classList.contains("dark-mode"));
 }
 
 function tarzDegistir(){
-  tarz=document.getElementById("tarzSec").value;
+  tarz = document.getElementById("tarzSec").value;
   localStorage.setItem("konusogleTarz",tarz);
 }
 
-window.onload=function(){
-  const kayitliChat=localStorage.getItem("konusogleChat");
-  if(kayitliChat) document.getElementById("chatBox").innerHTML=kayitliChat;
-  if(localStorage.getItem("darkMode")==="true") document.body.classList.add("dark-mode");
-  document.getElementById("tarzSec").value=tarz;
-}
-
-document.getElementById("searchInput").addEventListener("keydown",function(e){
-  if(e.key==="Enter") cevapVer();
+// Enter tuşu ile gönder
+document.getElementById("searchInput").addEventListener("keydown", function(e){
+  if(e.key==="Enter"){cevapVer();}
 });
+
+// Sohbet geçmişi
+if(localStorage.getItem("konusogleChat")){
+  document.getElementById("chatBox").innerHTML = localStorage.getItem("konusogleChat");
+}
+setInterval(()=>{localStorage.setItem("konusogleChat",document.getElementById("chatBox").innerHTML)},1000);
 </script>
 
 </body>
