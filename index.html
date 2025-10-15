@@ -3,35 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Konuşogle 200+</title>
+<title>Konuşogle - Çoklu Sohbet</title>
 <style>
-body { font-family: Arial, sans-serif; margin:0; padding:0; background-color:#f4f4f9; color:#333; }
-.chat-container { width:100%; max-width:600px; margin:20px auto; background:#fff; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1); display:flex; flex-direction:column; }
-.chat-header { background:#4CAF50; color:white; padding:10px; text-align:center; border-radius:10px 10px 0 0; }
-.chat-box { flex:1; height:400px; overflow-y:auto; padding:10px; border-bottom:1px solid #ddd; display:flex; flex-direction:column; }
-.chat-box .message { margin:10px 0; padding:10px; border-radius:10px; max-width:80%; }
-.chat-box .user { background:#e1f5e1; align-self:flex-end; }
-.chat-box .bot { background:#f1f1f1; align-self:flex-start; }
-.chat-footer { display:flex; padding:10px; border-radius:0 0 10px 10px; gap:5px; }
-.chat-footer input { flex:1; padding:10px; border:1px solid #ddd; border-radius:10px; }
-.chat-footer button { padding:10px 15px; background:#4CAF50; color:white; border:none; border-radius:10px; cursor:pointer; }
+body { margin:0; font-family: Arial,sans-serif; background:#f4f4f9; display:flex; height:100vh; }
+#sidebar { width:200px; background:#4CAF50; color:white; padding:10px; display:flex; flex-direction:column; }
+#sidebar button { margin-bottom:5px; padding:10px; border:none; border-radius:5px; cursor:pointer; background:#66bb6a; color:white; font-weight:bold; }
+#sidebar button:hover { background:#57a05c; }
+#main { flex:1; display:flex; flex-direction:column; border-left:1px solid #ddd; }
+.chat-header { background:#4CAF50; color:white; padding:10px; font-weight:bold; text-align:center; }
+.chat-box { flex:1; padding:10px; overflow-y:auto; display:flex; flex-direction:column; }
+.chat-box .message { margin:5px 0; padding:10px 15px; border-radius:15px; max-width:75%; word-wrap:break-word; }
+.chat-box .user { background:#e1f5e1; align-self:flex-end; text-align:right; }
+.chat-box .bot { background:#f1f1f1; align-self:flex-start; text-align:left; }
+.chat-box .sender { font-weight:bold; display:block; margin-bottom:3px; font-size:0.85em; }
+.chat-footer { display:flex; padding:10px; gap:5px; border-top:1px solid #ddd; }
+.chat-footer input { flex:1; padding:10px; border-radius:10px; border:1px solid #ccc; }
+.chat-footer button { padding:10px 15px; border:none; border-radius:10px; cursor:pointer; background:#4CAF50; color:white; font-weight:bold; }
 .chat-footer button:hover { background:#45a049; }
-.dark-mode { background-color:#121212; color:white; }
-.dark-mode .chat-header { background-color:#333; }
-.dark-mode .chat-box { background-color:#1e1e1e; }
-.dark-mode .chat-box .message { background-color:#333; color:white; }
-.dark-mode .chat-footer input, .dark-mode .chat-footer button { background-color:#333; color:white; border:1px solid #444; }
 </style>
 </head>
 <body>
-<div class="chat-container">
-<div class="chat-header">Konuşogle 200+</div>
+
+<div id="sidebar">
+<button onclick="newChat()">+ Yeni Sohbet</button>
+<div id="chatList"></div>
+</div>
+
+<div id="main">
+<div class="chat-header" id="chatTitle">Sohbet 1</div>
 <div class="chat-box" id="chatBox"></div>
 <div class="chat-footer">
 <input type="text" id="userInput" placeholder="Bir şey yaz..." onkeydown="if(event.key==='Enter') sendMessage()">
 <button onclick="sendMessage()">Gönder</button>
 <button onclick="clearChat()">Temizle</button>
-<button onclick="toggleDarkMode()">🌙</button>
 </div>
 </div>
 
@@ -40,9 +44,11 @@ body { font-family: Arial, sans-serif; margin:0; padding:0; background-color:#f4
 let userName = localStorage.getItem("userName") || prompt("Kullanıcı adınızı girin:") || "Sen";
 localStorage.setItem("userName", userName);
 
-const chatBox = document.getElementById("chatBox");
+// Sohbetler ve seçim
+let chats = JSON.parse(localStorage.getItem("chats")||"{}");
+let currentChat = "Sohbet 1";
 
-// 200+ özel kelime ve cevapları (kategori bazlı)
+// Özel kelimeler ve cevaplar
 const cevapGruplari = [
 {kelimeler:["merhaba","selam","naber","hey","selamlar"], cevap:"Merhaba! Nasılsın?"},
 {kelimeler:["iyi","iyi sen","harika","mükemmel","güzel"], cevap:"Buna sevindim 😊"},
@@ -52,9 +58,6 @@ const cevapGruplari = [
 {kelimeler:["hava durumu","bugün hava","yarın hava"], cevap:"Bugün hava Bulogle'de hep güzel! ☀️"},
 {kelimeler:["evet","tabii","olur","peki"], cevap:"Tamam 😎"},
 {kelimeler:["hayır","asla","yok"], cevap:"Tamam, sorun yok"},
-{kelimeler:["teşekkür","sağ ol","teşekkürler"], cevap:"Rica ederim 😊"},
-{kelimeler:["çalışıyor mu","çalışıyor mu bu","doğru mu"], cevap:"Evet, çalışıyor!"},
-{kelimeler:["aç mısın","acıkttın mı","yemek yedin mi"], cevap:"Ben yemek yemem 😎"},
 {kelimeler:["uykum var","uyumak istiyorum","uyumalıyım"], cevap:"Hadi biraz dinlen 🛌"},
 {kelimeler:["aşk","sevgilim","sevgili","âşıkım"], cevap:"Aşk güzel şey 😍"},
 {kelimeler:["brawl stars","brawl","bs"], cevap:"Brawl Stars oynamak eğlenceli 🎮"},
@@ -71,69 +74,86 @@ const cevapGruplari = [
 {kelimeler:["gezi","tatil","seyahat"], cevap:"Gezi planı hazır 🏖️"},
 {kelimeler:["şaka","komik","mizah"], cevap:"😂"},
 {kelimeler:["gül","mutlu","sevinç","keyif"], cevap:"😊 Harika!"},
-{kelimeler:["ağla","üzgün","üzüntü","kederli"], cevap:"Üzgünüm 😔"},
-{kelimeler:["uygulama","app","program","site"], cevap:"Evet, bu bir web uygulaması"},
-{kelimeler:["çıkış","çık","kapat"], cevap:"Hoşça kal!"},
-{kelimeler:["deneme","test","sınama"], cevap:"Deneme başarılı 😎"},
-{kelimeler:["çizim yap","resim yap","drawing","sanat"], cevap:"Resim yap 🎨"},
-{kelimeler:["yürü","koş","koşu zamanı","hareket et"], cevap:"Hadi hareket et! 🏃"},
-{kelimeler:["mesaj gönder","mesaj oku","yaz"], cevap:"Mesajlar işlendi 💌"},
-{kelimeler:["araştır","düşün","merak et"], cevap:"Biraz düşün 🤔"},
-// ... diğer kelimeler aynı mantıkla eklenebilir, toplam 200+ özel kelime
+{kelimeler:["ağla","üzgün","üzüntü","kederli"], cevap:"Üzgünüm 😔"}
 ];
+
+// Yeni sohbet
+function newChat(){
+  let chatName = "Sohbet " + (Object.keys(chats).length+1);
+  chats[chatName]=[];
+  currentChat = chatName;
+  localStorage.setItem("chats", JSON.stringify(chats));
+  updateChatList();
+  loadChat(chatName);
+}
+
+// Listeyi güncelle
+function updateChatList(){
+  const chatList = document.getElementById("chatList");
+  chatList.innerHTML="";
+  for(let chat in chats){
+    let btn = document.createElement("button");
+    btn.textContent = chat;
+    btn.onclick=()=>{currentChat=chat; loadChat(chat);}
+    chatList.appendChild(btn);
+  }
+}
+updateChatList();
+
+// Sohbeti yükle
+function loadChat(chatName){
+  document.getElementById("chatTitle").textContent = chatName;
+  const chatBox = document.getElementById("chatBox");
+  chatBox.innerHTML="";
+  let history = chats[chatName]||[];
+  history.forEach(msg=>addMessage(msg.sender,msg.message,msg.type,false));
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
 
 // Mesaj gönder
 function sendMessage(){
-const input = document.getElementById("userInput").value.trim();
-if(!input) return;
-addMessage(userName,input,"user");
+  const input = document.getElementById("userInput").value.trim();
+  if(!input) return;
+  addMessage(userName,input,"user",true);
 
-const lowerInput = input.toLowerCase();
-let response = "?"; // Katalogda yoksa soru işareti
-
-for(let grup of cevapGruplari){
-  if(grup.kelimeler.includes(lowerInput)){
-    response = grup.cevap;
-    break;
+  const lowerInput = input.toLowerCase();
+  let response = "?";
+  for(let grup of cevapGruplari){
+    if(grup.kelimeler.includes(lowerInput)){
+      response = grup.cevap;
+      break;
+    }
   }
-}
-
-addMessage("Bot",response,"bot");
-document.getElementById("userInput").value="";
-chatBox.scrollTop = chatBox.scrollHeight;
+  addMessage("Bot",response,"bot",true);
+  document.getElementById("userInput").value="";
 }
 
 // Mesaj ekle
-function addMessage(sender,message,type){
-const msgDiv = document.createElement("div");
-msgDiv.className=`message ${type}`;
-msgDiv.textContent=`${sender}: ${message}`;
-chatBox.appendChild(msgDiv);
+function addMessage(sender,message,type,save=true){
+  const msgDiv = document.createElement("div");
+  msgDiv.className = `message ${type}`;
+  msgDiv.innerHTML = `<span class="sender">${sender}</span>${message}`;
+  document.getElementById("chatBox").appendChild(msgDiv);
+  document.getElementById("chatBox").scrollTop = document.getElementById("chatBox").scrollHeight;
 
-let history = JSON.parse(localStorage.getItem("chatHistory")||"[]");
-history.push({sender,message,type});
-localStorage.setItem("chatHistory",JSON.stringify(history));
+  if(save){
+    chats[currentChat] = chats[currentChat] || [];
+    chats[currentChat].push({sender,message,type});
+    localStorage.setItem("chats",JSON.stringify(chats));
+  }
 }
 
-// Geçmişi yükle
-function loadHistory(){
-let history = JSON.parse(localStorage.getItem("chatHistory")||"[]");
-history.forEach(msg=>addMessage(msg.sender,msg.message,msg.type));
-}
-
-// Sohbeti temizle
+// Sohbet temizle
 function clearChat(){
-localStorage.removeItem("chatHistory");
-chatBox.innerHTML="";
+  chats[currentChat]=[];
+  localStorage.setItem("chats",JSON.stringify(chats));
+  loadChat(currentChat);
 }
 
-// Gece modu
-function toggleDarkMode(){
-document.body.classList.toggle("dark-mode");
-}
+// İlk sohbeti aç
+if(Object.keys(chats).length===0) newChat();
+else loadChat(Object.keys(chats)[0]);
 
-// Sayfa açıldığında geçmişi yükle
-loadHistory();
 </script>
 </body>
 </html>
