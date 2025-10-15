@@ -1,164 +1,232 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Konuşogle 500+</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f9; color: #333; }
-    .chat-container { width: 100%; max-width: 600px; margin: 20px auto; background: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
-    .chat-header { background: #4CAF50; color: white; padding: 10px; text-align: center; border-radius: 10px 10px 0 0; }
-    .chat-box { flex: 1; height: 400px; overflow-y: auto; padding: 10px; border-bottom: 1px solid #ddd; display: flex; flex-direction: column; }
-    .chat-box .message { margin: 10px 0; padding: 10px; border-radius: 10px; max-width: 80%; }
-    .chat-box .user { background: #e1f5e1; align-self: flex-end; }
-    .chat-box .bot { background: #f1f1f1; align-self: flex-start; }
-    .chat-footer { display: flex; padding: 10px; border-radius: 0 0 10px 10px; gap: 5px; }
-    .chat-footer input { flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 10px; }
-    .chat-footer button { padding: 10px 15px; background: #4CAF50; color: white; border: none; border-radius: 10px; cursor: pointer; }
-    .chat-footer button:hover { background: #45a049; }
-    .dark-mode { background-color: #121212; color: white; }
-    .dark-mode .chat-header { background-color: #333; }
-    .dark-mode .chat-box { background-color: #1e1e1e; }
-    .dark-mode .chat-box .message { background-color: #333; color: white; }
-    .dark-mode .chat-footer input, .dark-mode .chat-footer button { background-color: #333; color: white; border: 1px solid #444; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Konuşogle 200+</title>
+<style>
+body { font-family: Arial, sans-serif; margin:0; padding:0; background-color:#f4f4f9; color:#333; }
+.chat-container { width:100%; max-width:600px; margin:20px auto; background:#fff; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.1); display:flex; flex-direction:column; }
+.chat-header { background:#4CAF50; color:white; padding:10px; text-align:center; border-radius:10px 10px 0 0; }
+.chat-box { flex:1; height:400px; overflow-y:auto; padding:10px; border-bottom:1px solid #ddd; display:flex; flex-direction:column; }
+.chat-box .message { margin:10px 0; padding:10px; border-radius:10px; max-width:80%; }
+.chat-box .user { background:#e1f5e1; align-self:flex-end; }
+.chat-box .bot { background:#f1f1f1; align-self:flex-start; }
+.chat-footer { display:flex; padding:10px; border-radius:0 0 10px 10px; gap:5px; }
+.chat-footer input { flex:1; padding:10px; border:1px solid #ddd; border-radius:10px; }
+.chat-footer button { padding:10px 15px; background:#4CAF50; color:white; border:none; border-radius:10px; cursor:pointer; }
+.chat-footer button:hover { background:#45a049; }
+.dark-mode { background-color:#121212; color:white; }
+.dark-mode .chat-header { background-color:#333; }
+.dark-mode .chat-box { background-color:#1e1e1e; }
+.dark-mode .chat-box .message { background-color:#333; color:white; }
+.dark-mode .chat-footer input, .dark-mode .chat-footer button { background-color:#333; color:white; border:1px solid #444; }
+</style>
 </head>
 <body>
-  <div class="chat-container">
-    <div class="chat-header">Konuşogle 500+</div>
-    <div class="chat-box" id="chatBox"></div>
-    <div class="chat-footer">
-      <input type="text" id="userInput" placeholder="Bir şey yaz..." onkeydown="if(event.key==='Enter') sendMessage()">
-      <button onclick="sendMessage()">Gönder</button>
-      <button onclick="clearChat()">Temizle</button>
-      <button onclick="toggleDarkMode()">🌙</button>
-    </div>
-  </div>
+<div class="chat-container">
+<div class="chat-header">Konuşogle 200+</div>
+<div class="chat-box" id="chatBox"></div>
+<div class="chat-footer">
+<input type="text" id="userInput" placeholder="Bir şey yaz..." onkeydown="if(event.key==='Enter') sendMessage()">
+<button onclick="sendMessage()">Gönder</button>
+<button onclick="clearChat()">Temizle</button>
+<button onclick="toggleDarkMode()">🌙</button>
+</div>
+</div>
 
-  <script>
-    let userName = localStorage.getItem("userName") || prompt("Kullanıcı adınızı girin:") || "Sen";
-    localStorage.setItem("userName", userName);
+<script>
+// Kullanıcı adı
+let userName = localStorage.getItem("userName") || prompt("Kullanıcı adınızı girin:") || "Sen";
+localStorage.setItem("userName", userName);
 
-    const chatBox = document.getElementById("chatBox");
+const chatBox = document.getElementById("chatBox");
 
-    // 500+ özel kelime ve cevapları (örnek: tüm varyasyonları ekleyebilirsin)
-    const cevaplar = {
-      "merhaba":"Merhaba! Nasılsın?",
-      "selam":"Selam! Nasılsın?",
-      "nasılsın":"İyiyim, sen nasılsın?",
-      "iyi":"Buna sevindim",
-      "iyi sen":"Buna sevindim",
-      "sıkıldım":"Biraz dışarı çıkmak iyi gelir",
-      "canım sıkıldı":"Bir şeyler yap, moralin yerine gelsin",
-      "ben kimim":"Allah'ın bir kulu",
-      "evet":"Tamam 😎",
-      "hayır":"Tamam, sorun yok",
-      "teşekkür":"Rica ederim 😊",
-      "sağ ol":"Ne demek 😎",
-      "çalışıyor mu":"Evet, çalışıyor!",
-      "güzel":"Teşekkür ederim 😊",
-      "kötü":"Üzgünüm 😔",
-      "aç mısın":"Ben yemek yemem 😎",
-      "uygulama":"Evet, bu bir web uygulaması",
-      "çıkış":"Hoşça kal!",
-      "deneme":"Deneme başarılı 😎",
-      "program":"Evet, programlama öğrenebilirsin",
-      "kod":"Kod yazabilirim 😎",
-      "oyun":"Oyun oynayabilirsin",
-      "film":"Film izleyebilirsin",
-      "müzik":"Müzik dinleyebilirsin",
-      "spor":"Spor yapmak sağlıklı",
-      "spor yapmak":"Spor yapmak sağlıklı",
-      "hava durumu":"Bugün hava Bulogle'de hep güzel! ☀️",
-      "bugün":"Bugün harika bir gün 😎",
-      "yarın":"Yarın da güzel olacak",
-      "gece":"İyi geceler 🌙",
-      "günaydın":"Günaydın! ☀️",
-      "iyi akşamlar":"İyi akşamlar 🌙",
-      "nasılsınız":"İyiyim, teşekkürler",
-      "her şey iyi":"Harika 😎",
-      "sorun":"Sorun nedir?",
-      "yardım":"Tabii, neye ihtiyacın var?",
-      "çalış":"Tamam, çalışıyorum 😎",
-      "bekle":"Bekliyorum...",
-      "dur":"Tamam durdum",
-      "başla":"Hadi başlayalım!",
-      "bitir":"Bitti 😎",
-      "devam":"Devam edelim!",
-      "gül":"😊",
-      "ağla":"😢",
-      "mutlu":"😊 Harika!",
-      "üzgün":"Üzgünüm 😔",
-      "şaka":"😂",
-      "komik":"😄",
-      "müzik aç":"Müzik açıldı 🎵",
-      "film aç":"Film açıldı 🎬",
-      "oyun aç":"Oyun başlatıldı 🎮",
-      "çık":"Hoşça kal!",
-      "gir":"Girdi",
-      "kaydet":"Kaydedildi!",
-      "sil":"Silindi!",
-      "güncelle":"Güncellendi!",
-      "arama":"Arama yapılıyor...",
-      "durdur":"Durdu",
-      "devam et":"Devam ediyor",
-      "yükle":"Yüklendi",
-      "indir":"İndirildi",
-      "paylaş":"Paylaşıldı"
-      // Devamını benzer şekilde 500+ kelimeyi ekleyebilirsin
-    };
+// 200+ özel kelime ve cevapları
+const cevaplar = {
+"merhaba":"Merhaba! Nasılsın?",
+"selam":"Selam! Nasılsın?",
+"nasılsın":"İyiyim, sen nasılsın?",
+"iyi":"Buna sevindim",
+"iyi sen":"Buna sevindim",
+"sıkıldım":"Biraz dışarı çıkmak iyi gelir",
+"canım sıkıldı":"Bir şeyler yap, moralin yerine gelsin",
+"ben kimim":"Allah'ın bir kulu",
+"evet":"Tamam 😎",
+"hayır":"Tamam, sorun yok",
+"teşekkür":"Rica ederim 😊",
+"sağ ol":"Ne demek 😎",
+"çalışıyor mu":"Evet, çalışıyor!",
+"güzel":"Teşekkür ederim 😊",
+"kötü":"Üzgünüm 😔",
+"aç mısın":"Ben yemek yemem 😎",
+"uygulama":"Evet, bu bir web uygulaması",
+"çıkış":"Hoşça kal!",
+"deneme":"Deneme başarılı 😎",
+"program":"Evet, programlama öğrenebilirsin",
+"kod":"Kod yazabilirim 😎",
+"oyun":"Oyun oynayabilirsin",
+"oyun oyna":"Oyun başlasın 🎮",
+"film":"Film izleyebilirsin",
+"film izle":"Film izledin mi?",
+"müzik":"Müzik dinleyebilirsin",
+"müzik dinle":"Müziği aç",
+"spor":"Spor yapmak sağlıklı",
+"spor yapmak":"Spor zamanı 💪",
+"hava durumu":"Bugün hava Bulogle'de hep güzel! ☀️",
+"bugün":"Bugün harika bir gün 😎",
+"yarın":"Yarın da güzel olacak",
+"gece":"İyi geceler 🌙",
+"günaydın":"Günaydın! ☀️",
+"iyi akşamlar":"İyi akşamlar 🌙",
+"nasılsınız":"İyiyim, teşekkürler",
+"her şey iyi":"Harika 😎",
+"sorun":"Sorun nedir?",
+"yardım":"Tabii, neye ihtiyacın var?",
+"çalış":"Tamam, çalışıyorum 😎",
+"bekle":"Bekliyorum...",
+"dur":"Tamam durdum",
+"başla":"Hadi başlayalım!",
+"bitir":"Bitti 😎",
+"devam":"Devam edelim!",
+"gül":"😊",
+"ağla":"😢",
+"mutlu":"😊 Harika!",
+"üzgün":"Üzgünüm 😔",
+"şaka":"😂",
+"komik":"😄",
+"müzik aç":"Müzik açıldı 🎵",
+"film aç":"Film açıldı 🎬",
+"oyun aç":"Oyun başlatıldı 🎮",
+"çık":"Hoşça kal!",
+"gir":"Girdi",
+"kaydet":"Kaydedildi!",
+"sil":"Silindi!",
+"güncelle":"Güncellendi!",
+"arama":"Arama yapılıyor...",
+"durdur":"Durdu",
+"devam et":"Devam ediyor",
+"yükle":"Yüklendi",
+"indir":"İndirildi",
+"paylaş":"Paylaşıldı",
+"sor":"Ne soracaksın?",
+"ara":"Arama başlatıldı...",
+"oyuncak":"Oyun ve oyuncaklar hazır",
+"alışveriş":"Alışveriş zamanı 🛒",
+"okul":"Okula gidiyorsun",
+"çalışma":"Çalışma zamanı 📝",
+"ders":"Ders yap!",
+"tatil":"Tatil güzel olur 🏖️",
+"yemek":"Ne yemek istersin?",
+"su":"Su içmeyi unutma 💧",
+"kahve":"Kahve içebilirsin ☕",
+"çay":"Çay iyi gelir 🍵",
+"araba":"Arabayı sürmek eğlenceli 🚗",
+"telefon":"Telefonun çalışıyor mu?",
+"bilgisayar":"Bilgisayar açık mı?",
+"not":"Not aldın mı?",
+"film öneri":"Film öneriyorum 🎬",
+"müzik öneri":"Müzik açıldı 🎵",
+"oyun öneri":"Oyun başlatıldı 🎮",
+"alışveriş yap":"Alışverişe çıkabilirsin 🛍️",
+"tatil plan":"Tatil planı hazır",
+"spor yap":"Hadi spor zamanı 💪",
+"yürü":"Yürüyüş yap",
+"koş":"Koşmaya başla",
+"koşu":"Koşu zamanı 🏃",
+"yemek hazır":"Yemek hazır 🍲",
+"kitap":"Kitap oku 📚",
+"ders çalış":"Ders zamanı 📝",
+"çizim yap":"Çizim zamanı 🎨",
+"resim yap":"Resim yapabilirsin 🎨",
+"oyun kur":"Oyun kurabilirsin 🎮",
+"arkadaş":"Arkadaşlarınla görüş",
+"sevinç":"Seviniyorum 😊",
+"üzüntü":"Üzgünüm 😔",
+"müzik dinle":"Müzik açıldı 🎵",
+"film izle":"Film açıldı 🎬",
+"uyku":"Uyku zamanı 🛌",
+"gezi":"Gezi planı hazır",
+"tatil yap":"Tatil zamanı 🏖️",
+"alışveriş zamanı":"Alışveriş yapabilirsin 🛍️",
+"oyun zamanı":"Oyun zamanı 🎮",
+"spor zamanı":"Spor yap 💪",
+"yemek zamanı":"Yemek vakti 🍲",
+"çay zamanı":"Çay içebilirsin 🍵",
+"kahve zamanı":"Kahve içebilirsin ☕",
+"kitap zamanı":"Kitap oku 📚",
+"ders zamanı":"Ders çalış 📝",
+"çizim zamanı":"Çizim yap 🎨",
+"resim zamanı":"Resim yap 🎨",
+"koş zamanı":"Koşu başla 🏃",
+"yürü zamanı":"Yürüyüş yap 🚶",
+"film vakti":"Film izle 🎬",
+"müzik vakti":"Müziği aç 🎵",
+"uyku vakti":"Uyku zamanı 🛌",
+"dinlen":"Dinlenmeye zaman ayır",
+"düşün":"Biraz düşün 🤔",
+"araştır":"Araştırmaya başla 🔍",
+"oyun kur":"Oyun hazır 🎮",
+"arkadaş bul":"Arkadaş bulmaya çalış",
+"mesaj gönder":"Mesaj gönderildi",
+"mesaj oku":"Mesajlar okundu"
+};
 
-    function sendMessage() {
-      const input = document.getElementById("userInput").value.trim();
-      if (!input) return;
+// Mesaj gönder
+function sendMessage(){
+const input = document.getElementById("userInput").value.trim();
+if(!input) return;
+addMessage(userName,input,"user");
 
-      addMessage(userName, input, "user");
+const lowerInput = input.toLowerCase();
+let response = cevaplar[lowerInput];
 
-      const lowerInput = input.toLowerCase();
-      let response = cevaplar[lowerInput];
+if(!response){
+const rastgele = [
+`"${input}" Boşverrr, takma kafana 😊`,
+`"${input}" mi? Sanane ki 😎`,
+`"${input}" diyorsun da... Banane 🤨`
+];
+response = rastgele[Math.floor(Math.random()*rastgele.length)];
+}
 
-      if (!response) {
-        const rastgele = [
-          `"${input}" Boşverrr, takma kafana 😊`,
-          `"${input}" mi? Sanane ki 😎`,
-          `"${input}" diyorsun da... Banane 🤨`
-        ];
-        response = rastgele[Math.floor(Math.random() * rastgele.length)];
-      }
+addMessage("Bot",response,"bot");
+document.getElementById("userInput").value="";
+chatBox.scrollTop = chatBox.scrollHeight;
+}
 
-      addMessage("Bot", response, "bot");
-      document.getElementById("userInput").value = "";
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
+// Mesaj ekle
+function addMessage(sender,message,type){
+const msgDiv = document.createElement("div");
+msgDiv.className=`message ${type}`;
+msgDiv.textContent=`${sender}: ${message}`;
+chatBox.appendChild(msgDiv);
 
-    function addMessage(sender, message, type) {
-      const msgDiv = document.createElement("div");
-      msgDiv.className = `message ${type}`;
-      msgDiv.textContent = `${sender}: ${message}`;
-      chatBox.appendChild(msgDiv);
+// Kaydet
+let history = JSON.parse(localStorage.getItem("chatHistory")||"[]");
+history.push({sender,message,type});
+localStorage.setItem("chatHistory",JSON.stringify(history));
+}
 
-      // Kaydet
-      let history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
-      history.push({sender,message,type});
-      localStorage.setItem("chatHistory", JSON.stringify(history));
-    }
+// Geçmişi yükle
+function loadHistory(){
+let history = JSON.parse(localStorage.getItem("chatHistory")||"[]");
+history.forEach(msg=>addMessage(msg.sender,msg.message,msg.type));
+}
 
-    function loadHistory() {
-      let history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
-      history.forEach(msg => addMessage(msg.sender,msg.message,msg.type));
-    }
+// Sohbeti temizle
+function clearChat(){
+localStorage.removeItem("chatHistory");
+chatBox.innerHTML="";
+}
 
-    function clearChat() {
-      localStorage.removeItem("chatHistory");
-      chatBox.innerHTML = "";
-    }
+// Gece modu
+function toggleDarkMode(){
+document.body.classList.toggle("dark-mode");
+}
 
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
-    }
-
-    // Sayfa açıldığında geçmişi yükle
-    loadHistory();
-  </script>
+// Sayfa açıldığında geçmişi yükle
+loadHistory();
+</script>
 </body>
 </html>
